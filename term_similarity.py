@@ -5,7 +5,7 @@ import streamlit as st
 
 from psql import similarity
 
-st.set_page_config("Word Similarity", layout="wide")
+st.set_page_config("Term Similarity", layout="wide")
 initial_value = """
 Microsoft Azure Developer Associate,
 Azure Developer Associate (AZ-204),
@@ -16,13 +16,13 @@ initial_synonyms = """
 Azure,Microsoft Azure
 """.strip()
 
-st.title("Word Similarity")
-words = st.text_area(
-    "Input",
+st.title("Term Similarity")
+terms = st.text_area(
+    "Terms",
     help="comma-separated list of terms",
     value=initial_value,
 )
-words = [w.strip() for w in words.split(",")]
+terms = [w.strip() for w in terms.split(",")]
 cols = st.columns(3)
 with st.sidebar:
     metrics = (
@@ -46,7 +46,7 @@ else:
     measure = getattr(Levenshtein, criteria)
 
 results = []
-for w, w2 in itertools.combinations(words, 2):
+for w, w2 in itertools.combinations(terms, 2):
     w_orig, w2_orig = w, w2
     if replace_synonyms:
         for s in synonyms:
