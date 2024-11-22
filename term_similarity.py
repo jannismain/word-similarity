@@ -45,6 +45,14 @@ elif criteria in {"psql_similarity"}:
 else:
     measure = getattr(Levenshtein, criteria)
 
+def norm(f):
+    def wrapper(w, w2):
+        return round(1-f(w, w2) / max([len(w), len(w2)]), 2)
+    return wrapper
+
+if criteria in "levenshtein hamming".split():
+    measure = norm(measure)
+
 results = []
 for w, w2 in itertools.combinations(terms, 2):
     w_orig, w2_orig = w, w2
@@ -57,8 +65,8 @@ for w, w2 in itertools.combinations(terms, 2):
         dict(
             first=w_orig,
             second=w2_orig,
-            levenshtein=Levenshtein.distance(w, w2),
-            hamming=Levenshtein.hamming(w, w2),
+            levenshtein=norm(Levenshtein.distance)(w, w2),
+            hamming=norm(Levenshtein.hamming)(w, w2),
             jaro=Levenshtein.jaro(w, w2),
             jaro_winkler=Levenshtein.jaro_winkler(w, w2),
             ratio=Levenshtein.ratio(w, w2),
