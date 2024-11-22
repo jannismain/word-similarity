@@ -7,8 +7,8 @@ from psql import similarity
 
 st.set_page_config("Term Similarity", layout="wide")
 initial_value = """
-Microsoft Azure Developer Associate,
-Azure Developer Associate (AZ-204),
+Microsoft Azure Developer Associate;
+Azure Developer Associate (AZ-204);
 Azure Developer Associate
 """.strip().replace("\n", " ")
 
@@ -22,7 +22,7 @@ terms = st.text_area(
     help="comma-separated list of terms",
     value=initial_value,
 )
-terms = [w.strip() for w in terms.split(",")]
+terms = [w.strip() for w in terms.split(";")]
 cols = st.columns(3)
 with st.sidebar:
     metrics = (
